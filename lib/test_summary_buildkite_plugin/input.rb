@@ -107,6 +107,7 @@ module TestSummaryBuildkitePlugin
     class JUnit < Base
       def file_contents_to_failures(str)
         xml = REXML::Document.new(str)
+        xml.entity_expansion_limit = 128000
         xml.elements.enum_for(:each, '//testcase').each_with_object([]) do |testcase, failures|
           testcase.elements.each('failure | error') do |failure|
             failures << Failure::Structured.new(
